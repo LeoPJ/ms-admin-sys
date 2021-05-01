@@ -10,18 +10,18 @@ jw_order表用来存放已抢购成功的用户，其中`id`字段为行数，�
 2. http://localhost/ms-admin-sys/Home.php/index/get_goods 可以查看当前redis里的库存信息。
 3. http://localhost/ms-admin-sys/Home.php/index/index 为用户抢购商品的页面，用户ID自定义输入，商品ID需要输入库存里已有商品的对应ID，抢购的数量可选，点击提交完成抢购，成功与否都会返回提示信息。
 4. 判断抢购成功与否的逻辑：先从redis的商品库存队列中查询对应商品的剩余库存，判断抢购数量是否小于当前库存，若小于等于则抢购成功，否则抢购失败。
-5. 抢购结束后需要访问并刷新http://localhost/ms-admin-sys/Home.php/index/get_user_goods实现把抢购信息存入jw_order表中，若抢购成功的有n件，则需要刷新n次保证所有信息存入MySQL。
+5. 抢购结束后需要访问并刷新 http://localhost/ms-admin-sys/Home.php/index/get_user_goods 实现把抢购信息存入jw_order表中，若抢购成功的有n件，则需要刷新n次保证所有信息存入MySQL。
 6. 抢购结束后从jw_order表中按照`createtime`字段大于开始抢购时间来筛选出抢购成功的订单信息。
 7. 刷新第2步里的链接可查看抢购结束后的库存剩余情况，刷新第1步里的链接重置所有信息，进行新一轮抢购。
 
 # 实现
 
 * 利用ThinkPHP框架
-* URL模式选用默认的PATHINFO模式。
+* URL模式选用默认的PATHINFO模式
 * 功能实现的核心代码为ms-admin-sys\Application\Home\Controller\IndexController.class.php
 * 抢购页面代码为ms-admin-sys\Application\Home\View\Index\index.html
 * MySQL配置文件为ms-admin-sys\Application\Common\Conf\config.php，数据表初始化参考ms-admin-sys\ms-admin-sys.sql
-* 抢购商品的访问规则实例：http://localhost/ms-admin-sys/Home.php/index/user_goods?user_id=123&goods_id=4&num=1
+* 抢购商品的访问规则实例： http://localhost/ms-admin-sys/Home.php/index/user_goods?user_id=123&goods_id=4&num=1
 
 # 压力测试
 
