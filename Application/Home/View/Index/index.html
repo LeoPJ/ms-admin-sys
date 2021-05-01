@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>抢购中心</title>
+  <link rel="stylesheet" href="__PUBLIC__/index/css/layui.css">
+</head>
+<body>
+
+<div class="layui-form" style="width: 50%;margin: auto;margin-top: 20px;" id="app">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入用户ID" class="layui-input" v-model="user_id">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品ID" class="layui-input" v-model="goods_id">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入数量" class="layui-input" v-model="num">
+            <button type="button" class="layui-btn layui-btn-primary" style="margin-top: 20px;" @click="tijiao">提交</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="__PUBLIC__/index/js/jquery.js"></script>
+<script src="__PUBLIC__/index/js/layui.all.js"></script>
+<script src="__PUBLIC__/index/js/vue.js"></script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+        new Vue({
+            el: '#app',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+                user_id:"",
+                goods_id:"",
+                num:""
+            },
+            mounted() {
+                let _this=this;
+                console.log("分类页面已经加载");
+            },
+            methods: {
+                tijiao:function (){
+                    let _this=this;
+                    let user_id=_this.user_id;
+                    let goods_id=_this.goods_id;
+                    let num=_this.num;
+                    if (!user_id){
+                        layer.msg("用户ID不能为空");
+                        return;
+                    }
+                    if (!goods_id){
+                        layer.msg("商品ID不能为空");
+                        return;
+                    }
+                    if (!num){
+                        layer.msg("数量不能为空");
+                        return;
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "__URL__/user_goods",
+                        data: {
+                            user_id:user_id,
+                            goods_id:goods_id,
+                            num:num
+                        },
+                        success: function (data, textStatus) {
+                            layer.msg(data);
+                        },
+                    });
+
+                }
+            },
+
+        })
+    });
+
+
+</script>
+
+</body>
+</html>
